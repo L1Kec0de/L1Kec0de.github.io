@@ -76,7 +76,14 @@
 
   
   <url>
-    <loc>https://pan3a.github.io/categories/Web/</loc>
+    <loc>https://pan3a.github.io/categories/Intranet/</loc>
+    <lastmod>2022-02-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://pan3a.github.io/categories/ToolsStudy/</loc>
     <lastmod>2022-02-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -90,14 +97,7 @@
   </url>
   
   <url>
-    <loc>https://pan3a.github.io/categories/Intranet/</loc>
-    <lastmod>2022-02-11</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://pan3a.github.io/categories/ToolsStudy/</loc>
+    <loc>https://pan3a.github.io/categories/Web/</loc>
     <lastmod>2022-02-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
