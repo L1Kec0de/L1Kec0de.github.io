@@ -4,25 +4,7 @@
   <url>
     <loc>https://pan3a.github.io/10/</loc>
     
-    <lastmod>2022-02-23</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://pan3a.github.io/9/</loc>
-    
-    <lastmod>2022-02-23</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://pan3a.github.io/4/</loc>
-    
-    <lastmod>2022-02-23</lastmod>
+    <lastmod>2022-07-10</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -38,43 +20,7 @@
   </url>
   
   <url>
-    <loc>https://pan3a.github.io/8/</loc>
-    
-    <lastmod>2022-02-23</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://pan3a.github.io/7/</loc>
-    
-    <lastmod>2022-02-14</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://pan3a.github.io/6/</loc>
-    
-    <lastmod>2022-02-14</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://pan3a.github.io/5/</loc>
-    
-    <lastmod>2022-02-12</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://pan3a.github.io/3/</loc>
     
     <lastmod>2022-02-12</lastmod>
     
@@ -112,7 +58,7 @@
 
   <url>
     <loc>https://pan3a.github.io/</loc>
-    <lastmod>2022-02-24</lastmod>
+    <lastmod>2022-07-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -121,57 +67,22 @@
 
   
   <url>
-    <loc>https://pan3a.github.io/categories/Database/</loc>
-    <lastmod>2022-02-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://pan3a.github.io/categories/Intranet/</loc>
-    <lastmod>2022-02-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://pan3a.github.io/categories/JavaSecurity/</loc>
-    <lastmod>2022-02-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://pan3a.github.io/categories/PHP/</loc>
-    <lastmod>2022-02-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://pan3a.github.io/categories/essay/</loc>
-    <lastmod>2022-02-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://pan3a.github.io/categories/SQLInject/</loc>
-    <lastmod>2022-02-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://pan3a.github.io/categories/ToolsStudy/</loc>
-    <lastmod>2022-02-24</lastmod>
+    <lastmod>2022-07-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://pan3a.github.io/categories/Web/</loc>
-    <lastmod>2022-02-24</lastmod>
+    <lastmod>2022-07-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://pan3a.github.io/categories/essay/</loc>
+    <lastmod>2022-07-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
