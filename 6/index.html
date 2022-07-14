@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="代码审计，渗透测试">
+    <meta name="description" content="Windows认证协议">
+    <meta name="author" content="Pan3a">
+    
+    <title>
+        
+            内网渗透之Windows认证（二） |
+        
+        Pan3a&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/pan3a.svg">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/css/font-awesome.min.css">
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"pan3a.github.io","root":"/","language":"en","path":"search.json"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":true,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/pan3a.svg","favicon":"/images/pan3a.svg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":true,"scale":false},"first_screen":{"enable":false,"background_img":"/images/colorful-neon-city-4k-tx.jpeg","description":null},"scroll":{"progress_bar":{"enable":true},"percent":{"enable":false}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+  </script>
+<meta name="generator" content="Hexo 5.4.1"><link rel="alternate" href="/atom.xml" title="Pan3a's Blog" type="application/atom+xml">
+</head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                Pan3a&#39;s Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                文章
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/categories"
+                            >
+                                标签
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/about"
+                            >
+                                关于
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">文章</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/categories">标签</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">关于</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">内网渗透之Windows认证（二）</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/pan3a.svg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">Pan3a</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2022-06-26 14:01:22</span>
+        <span class="mobile">2022-06-26 14:01</span>
+    </span>
+    
+        <span class="article-categories article-meta-item">
+            <i class="fas fa-folder"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/categories/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/">内网渗透</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fas fa-file-word"></i>&nbsp;<span>1.6k Words</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fas fa-clock"></i>&nbsp;<span>6 Mins</span>
+        </span>
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fas fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <ul>
+<li>为什么有这篇文章呢，因为我们知道平常的Web系统有注册、登录是依赖数据库和后端的加密解密算法。那么Windows系统登录的时候是如何进行身份验证的呢，是否也有一个类似数据库的东西，或者就是一个单纯的文本呢？</li>
+</ul>
+<span id="more"></span>
+
+<ul>
+<li>参考–<a class="link"   target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/193149" >Windows内网协议学习NTLM篇之NTLM基础介绍<i class="fas fa-external-link-alt"></i></a></li>
+<li>Windows也有一个类似于数据的东西，存放在<code>%SystemRoot%\system32\config\sam</code>，里面存放着用户的凭证信息，当然这肯定不是明文，不然Windows这么写也太不安全了。这里的加密算法不同于常见的MD5，加密后的数据有两种分别为<code>LM Hash</code>和<code>NTLM Hash</code>。</li>
+</ul>
+<h2 id="LM-Hash"><a href="#LM-Hash" class="headerlink" title="LM Hash"></a>LM Hash</h2><ul>
+<li><p>LM Hash全称<code>LAN Manager Hash</code>，由IBM设计一般用于<code>Windows XP</code>、<code>Windows 2000</code>、<code>Windows 2003 </code>这一类系统中。加密算法如下。</p>
+</li>
+<li><p>密码长度不能超过14个字符。</p>
+</li>
+<li><p>密码转换为大写，再转换成16进制的字符串，没有28位长度的，在右边加0。</p>
+</li>
+<li><p>再将十六进制的字符串分为两组14位的字符串。</p>
+</li>
+<li><p>再将这两组14位的字符串进行十六进制转二进制，转换完成后不满足56位的在左边加0。</p>
+</li>
+<li><p>两部分分别划分为每组七位，在其末尾加0，再分别转换为十六进制。</p>
+</li>
+<li><p>最后将这两组数据作为DES加密所需的Key，<code>KGS!@#$%</code>作为需加密的字符，将DES加密后的数据依次拼接。</p>
+</li>
+<li><p>这里借用<a class="link"   target="_blank" rel="noopener" href="https://blog.zjun.info/tech/from-windows-local-authentication-to-obtaining-hash/" >zjun<i class="fas fa-external-link-alt"></i></a>的脚本。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"><span class="keyword">import</span> codecs</span><br><span class="line"><span class="keyword">from</span> pyDes <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">DesEncrypt</span>(<span class="params"><span class="built_in">str</span>, Key</span>):</span></span><br><span class="line">    k = des(Key, ECB, pad=<span class="literal">None</span>)</span><br><span class="line">    EncryptStr = k.encrypt(<span class="built_in">str</span>)</span><br><span class="line">    <span class="keyword">return</span> binascii.b2a_hex(EncryptStr)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ZeroPadding</span>(<span class="params"><span class="built_in">str</span></span>):</span></span><br><span class="line">    b = []</span><br><span class="line">    l = <span class="built_in">len</span>(<span class="built_in">str</span>)</span><br><span class="line">    num = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> n <span class="keyword">in</span> <span class="built_in">range</span>(l):</span><br><span class="line">        <span class="keyword">if</span> (num &lt; <span class="number">8</span>) <span class="keyword">and</span> n % <span class="number">7</span> == <span class="number">0</span>:</span><br><span class="line">            b.append(<span class="built_in">str</span>[n:n + <span class="number">7</span>] + <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">            num = num + <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&#x27;</span>.join(b)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    passwd = sys.argv[<span class="number">1</span>]</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;你的输入是:&#x27;</span>, passwd)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;转化为大写:&#x27;</span>, passwd.upper())</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 用户的密码转换为大写，并转换为 16 进制字符串</span></span><br><span class="line">    passwd = codecs.encode(passwd.upper().encode(), <span class="string">&#x27;hex_codec&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;转为 hex:&#x27;</span>, passwd.decode())</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 密码不足 28 位，用 0 在右边补全</span></span><br><span class="line">    passwd_len = <span class="built_in">len</span>(passwd)</span><br><span class="line">    <span class="keyword">if</span> passwd_len &lt; <span class="number">28</span>:</span><br><span class="line">        passwd = passwd.decode().ljust(<span class="number">28</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;补齐 28 位:&#x27;</span>, passwd)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 28 位的密码被分成两个 14 位部分</span></span><br><span class="line">    PartOne = passwd[<span class="number">0</span>:<span class="number">14</span>]</span><br><span class="line">    PartTwo = passwd[<span class="number">14</span>:]</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;两组 14 位的部分:&#x27;</span>, PartOne, PartTwo)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 每部分分别转换成比特流，并且长度为 56 位，长度不足用 0 在左边补齐长度</span></span><br><span class="line">    PartOne = <span class="built_in">bin</span>(<span class="built_in">int</span>(PartOne, <span class="number">16</span>)).lstrip(<span class="string">&#x27;0b&#x27;</span>).rjust(<span class="number">56</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">    PartTwo = <span class="built_in">bin</span>(<span class="built_in">int</span>(PartTwo, <span class="number">16</span>)).lstrip(<span class="string">&#x27;0b&#x27;</span>).rjust(<span class="number">56</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;两组 56 位比特流:&#x27;</span>, PartOne, PartTwo)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 两组分别再分为 7 位一组末尾加 0，再分别组合成新的字符</span></span><br><span class="line">    PartOne = ZeroPadding(PartOne)</span><br><span class="line">    PartTwo = ZeroPadding(PartTwo)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;两组再 7 位一组末尾加 0:&#x27;</span>, PartOne, PartTwo)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 两组数据转 hex</span></span><br><span class="line">    PartOne = <span class="built_in">hex</span>(<span class="built_in">int</span>(PartOne, <span class="number">2</span>))[<span class="number">2</span>:]</span><br><span class="line">    PartTwo = <span class="built_in">hex</span>(<span class="built_in">int</span>(PartTwo, <span class="number">2</span>))[<span class="number">2</span>:]</span><br><span class="line">    <span class="keyword">if</span> <span class="string">&#x27;0&#x27;</span> == PartTwo:</span><br><span class="line">        PartTwo = <span class="string">&quot;0000000000000000&quot;</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;两组转为 hex:&#x27;</span>, PartOne, PartTwo)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 16 位的二组数据，分别作为 DES key 为&quot;KGS!@#$%&quot;进行加密。</span></span><br><span class="line">    LMOne = DesEncrypt(<span class="string">&quot;KGS!@#$%&quot;</span>, binascii.a2b_hex(PartOne)).decode()</span><br><span class="line">    LMTwo = DesEncrypt(<span class="string">&quot;KGS!@#$%&quot;</span>, binascii.a2b_hex(PartTwo)).decode()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;两组 DES 加密结果:&#x27;</span>, LMOne, LMTwo)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 将二组 DES 加密后的编码拼接，得到 LM HASH 值。</span></span><br><span class="line">    LM = LMOne + LMTwo</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;LM hash:&#x27;</span>, LM)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://s1.ax1x.com/2022/07/11/jc9E60.png"
+                      alt="image.png"
+                ></p>
+</li>
+<li><p>可以看出密码长度小于7时，后面加密的数据是固定的，均为aad3b435b51404ee，因此其加密是不安全的。</p>
+<h2 id="NTML-Hash"><a href="#NTML-Hash" class="headerlink" title="NTML Hash"></a>NTML Hash</h2></li>
+<li><p>NTML Hash全称<code>NT LAN Manager</code> ， 目前 Windows 基本都使用 NTLM hash ，一个<code>32</code>位长度的字符串。支持Net NTLM认证协议及本地认证过程中的关键凭据。加密算法如下：</p>
+</li>
+<li><p>密码转换为十六进制</p>
+</li>
+<li><p><code>Unicode</code>编码</p>
+</li>
+<li><p><code>MD4</code>加密</p>
+</li>
+<li><p>Python脚本如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(binascii.hexlify(hashlib.new(<span class="string">&quot;md4&quot;</span>, sys.argv[<span class="number">1</span>].encode(<span class="string">&quot;utf-16le&quot;</span>)).digest()).decode())</span><br></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://s1.ax1x.com/2022/07/11/jc9Alq.png"
+                      alt="image.png"
+                ></p>
+</li>
+<li><p><code>123456</code>经过加密后则为<code>32ed87bdb5fdc5e9cba88547376818d4</code>。</p>
+<h2 id="Windows本地认证"><a href="#Windows本地认证" class="headerlink" title="Windows本地认证"></a>Windows本地认证</h2></li>
+<li><p><code>winlogon.exe</code> -&gt; 接收用户密码 -&gt; <code>lsass.exe</code> -&gt; 比对sam表。</p>
+</li>
+<li><p>winlogon就是登陆界面，接受用户密码之后会发送明文到<code>lsass.exe</code>，<code>lsass.exe</code>会存储一份明文，然后加密明文和sam表的hash做比对，判断是否可以登陆。</p>
+</li>
+<li><p>Windows Logon Process(即 winlogon.exe)，是Windows NT 用户登陆程序，用于管理用户登录和退出。LSASS用于微软Windows系统的安全机制。它用于本地安全和登陆策略。</p>
+</li>
+<li><p>这里注意如果打了补丁<code>KB2871997</code>，或者机器是<code>win2012</code>之后，则不会保存明文密码了。</p>
+<h2 id="NTLM认证协议"><a href="#NTLM认证协议" class="headerlink" title="NTLM认证协议"></a>NTLM认证协议</h2></li>
+<li><p>什么是<code>NTLM</code>认证协议呢？和<code>NTLM Hash</code>又有什么区别呢？<code>NTLM</code>是一种网络认证协议，它是基于挑战（Chalenge）&#x2F;响应（Response）认证机制的一种认证模式。NTLM 网络认证协议是以<code> NTLM Hash</code> 作为根本凭证进行认证的协议。</p>
+</li>
+<li><p>在内网渗透中，经常遇到工作组环境，而工作组环境是一个逻辑上的网络环境(工作区)，隶属于工作组的机器之间无法互相建立一个完美的信任机制，只能点对点，是比较落后的认证方式， 没有信托机构。</p>
+</li>
+<li><p>假设A主机与B主机属于同一个工作组环境，A想访问B主机上的资料，需要将一个存在于B主机上的账户凭证发送至B主机，经过认证才能够访问B主机上的资源。</p>
+</li>
+<li><p>早期SMB协议在网络上传输明文口令。后来出现LAN Manager Challenge&#x2F;Response验证机制，简称LM，它是如此简单以至很容易就被破解，现在又有了<code>NTLM</code>以及<code>Kerberos</code>。</p>
+</li>
+<li><p>认证流程分为三部分，分别是：<code>协商</code>、<code>质询</code>、<code>身份验证</code>。</p>
+</li>
+</ul>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://s1.ax1x.com/2022/07/11/jc9kpn.jpg"
+                     
+                ></p>
+<h3 id="协商"><a href="#协商" class="headerlink" title="协商"></a>协商</h3><ul>
+<li><p>客户端向服务器发送协商请求，包含用户名、密码、认证协议版本等信息。</p>
+<h3 id="质询"><a href="#质询" class="headerlink" title="质询"></a>质询</h3></li>
+<li><p>服务器接收到客户端发送到协商信息，这时服务器会生成一个随机数，叫做<code>challenge</code>，这里的不同的协议随机数长度不同，NTLM V1是8位，NTLM V2是16位。</p>
+</li>
+<li><p>服务器将登陆的用户对应的<code>NTLM Hash</code>加密<code>challenge</code>，得到<code>Net NTLM Hash</code>，和生成的<code>challenge</code>一起发送给客户端。</p>
+<h3 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h3></li>
+<li><p>客户端收到challenge后，将用户的hash与challenge进行加密运算得到resposne，将username、response、challenge发送给服务器，最后服务器进行校验返回认证结果。</p>
+<h3 id="WireShark"><a href="#WireShark" class="headerlink" title="WireShark"></a>WireShark</h3></li>
+<li><p>知道了基本原理自己实战试试</p>
+</li>
+</ul>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>Post title：内网渗透之Windows认证（二）</li>
+        <li>Post author：Pan3a</li>
+        <li>Create time：2022-06-26 14:01:22</li>
+        <li>
+            Post link：https://pan3a.github.io/6/
+        </li>
+        <li>
+            Copyright Notice：All articles in this blog are licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> unless stating additionally.
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/4/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">语录</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/5/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">内网渗透之域环境搭建（一）</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2021</span>
+              -
+            
+            2022&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">Pan3a</a>
+        </div>
+        
+            <script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="website-count info-item">
+                
+                
+                    <span id="busuanzi_container_site_pv">
+                        Totalview&nbsp;<span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="theme-info info-item">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;|&nbsp;Theme&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+            <li class="tools-item rss flex-center">
+                <a class="flex-center"
+                   href="/atom.xml"
+                   target="_blank"
+                >
+                    <i class="fas fa-rss"></i>
+                </a>
+            </li>
+        
+
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="fas fa-arrow-up"></i>
+            </li>
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#LM-Hash"><span class="nav-number">1.</span> <span class="nav-text">LM Hash</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NTML-Hash"><span class="nav-number">2.</span> <span class="nav-text">NTML Hash</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Windows%E6%9C%AC%E5%9C%B0%E8%AE%A4%E8%AF%81"><span class="nav-number">3.</span> <span class="nav-text">Windows本地认证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NTLM%E8%AE%A4%E8%AF%81%E5%8D%8F%E8%AE%AE"><span class="nav-number">4.</span> <span class="nav-text">NTLM认证协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%8F%E5%95%86"><span class="nav-number">4.1.</span> <span class="nav-text">协商</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B4%A8%E8%AF%A2"><span class="nav-number">4.2.</span> <span class="nav-text">质询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AA%8C%E8%AF%81"><span class="nav-number">4.3.</span> <span class="nav-text">验证</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WireShark"><span class="nav-number">4.4.</span> <span class="nav-text">WireShark</span></a></li></ol></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/utils.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/main.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/header-shrink.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/back2top.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/dark-light-toggle.js"></script>
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/local-search.js"></script>
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/code-copy.js"></script>
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/lazyload.js"></script>
+
+
+<div class="post-scripts pjax">
+    
+        <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/left-side-toggle.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/libs/anime.min.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/toc.js"></script>
+    
+</div>
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/libs/pjax.min.js"></script>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>
