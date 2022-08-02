@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://pan3a.github.io/7/</loc>
+    
+    <lastmod>2022-08-02</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://pan3a.github.io/2/</loc>
     
     <lastmod>2022-08-02</lastmod>
@@ -21,15 +30,6 @@
   
   <url>
     <loc>https://pan3a.github.io/3/</loc>
-    
-    <lastmod>2022-07-19</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://pan3a.github.io/cl6bl8w0z0007xwsbdojj2jfz/</loc>
     
     <lastmod>2022-07-19</lastmod>
     
